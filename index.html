@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adir Mamou | Data Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; font-family: 'Inter', sans-serif; }
+        .project-card:hover { transform: translateY(-10px); transition: 0.3s; border-color: #38bdf8; }
+    </style>
+</head>
+<body class="p-8 md:p-20">
+
+    <header class="text-center mb-20 animate-fade-in">
+        <h1 class="text-5xl font-extrabold text-white mb-4">Adir Mamou</h1>
+        <p class="text-xl text-sky-400">Data Analyst & ETL Developer</p>
+        <div class="mt-6 flex justify-center gap-4">
+            <a href="mailto:Adir.Mamou@gmail.com" class="hover:text-sky-400"><i class="fa-solid fa-envelope fa-xl"></i></a>
+            <a href="https://www.linkedin.com/in/adir-mamou-492239208" target="_blank" class="hover:text-sky-400"><i class="fa-brands fa-linkedin fa-xl"></i></a>
+        </div>
+    </header>
+
+    <h2 class="text-3xl font-bold mb-10 border-b-2 border-sky-800 pb-2">My Projects</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        
+        <div class="project-card border-2 border-slate-700 bg-slate-800 p-6 rounded-2xl cursor-pointer">
+            <div class="text-sky-400 mb-4"><i class="fa-solid fa-list-check fa-2xl"></i></div>
+            <h3 class="text-xl font-bold mb-2">ProofHub Operations</h3>
+            <p class="text-slate-400 text-sm mb-4">Full ELT/ETL pipeline (Airbyte/SSIS) for task management and team workload analysis.</p>
+            <span class="text-xs bg-sky-900 text-sky-200 px-2 py-1 rounded">SQL</span>
+            <span class="text-xs bg-sky-900 text-sky-200 px-2 py-1 rounded">Airbyte</span>
+        </div>
+
+        <div class="project-card border-2 border-slate-700 bg-slate-800 p-6 rounded-2xl cursor-pointer">
+            <div class="text-emerald-400 mb-4"><i class="fa-solid fa-chart-line fa-2xl"></i></div>
+            <h3 class="text-xl font-bold mb-2">Customer Success (CSM)</h3>
+            <p class="text-slate-400 text-sm mb-4">Tracking churn, feature adoption, and profitability through Data Lakes and Looker Studio.</p>
+            <span class="text-xs bg-emerald-900 text-emerald-200 px-2 py-1 rounded">Looker Studio</span>
+            <span class="text-xs bg-emerald-900 text-emerald-200 px-2 py-1 rounded">DWH</span>
+        </div>
+
+        <div class="project-card border-2 border-slate-700 bg-slate-800 p-6 rounded-2xl cursor-pointer">
+            <div class="text-amber-400 mb-4"><i class="fa-solid fa-bullseye fa-2xl"></i></div>
+            <h3 class="text-xl font-bold mb-2">Sales Leads Pipeline</h3>
+            <p class="text-slate-400 text-sm mb-4">Analysis of lead conversion rates and cycle times for the business department.</p>
+            <span class="text-xs bg-amber-900 text-amber-200 px-2 py-1 rounded">ETL</span>
+            <span class="text-xs bg-amber-900 text-amber-200 px-2 py-1 rounded">Analytics</span>
+        </div>
+
+        <div class="project-card border-2 border-slate-700 bg-slate-800 p-6 rounded-2xl cursor-pointer">
+            <div class="text-red-400 mb-4"><i class="fa-solid fa-shield-virus fa-2xl"></i></div>
+            <h3 class="text-xl font-bold mb-2">Fraud & Alerting</h3>
+            <p class="text-slate-400 text-sm mb-4">Advanced SQL-based analytics for real-time fraud identification and alerting.</p>
+            <span class="text-xs bg-red-900 text-red-200 px-2 py-1 rounded">Security</span>
+            <span class="text-xs bg-red-900 text-red-200 px-2 py-1 rounded">MSSQL</span>
+        </div>
+
+    </div>
+
+    <footer class="mt-20 text-center text-slate-500 text-sm">
+        &copy; 2026 Adir Mamou - Data Analysis Portfolio
+    </footer>
+
+</body>
+</html>
