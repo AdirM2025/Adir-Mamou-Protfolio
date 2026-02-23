@@ -15,17 +15,24 @@ Data Analyst and SQL Developer with 2 years of experience delivering valuable in
 
 ## 🚀 Featured Experience & Projects
 
-### Customer Success Management (CSM) Dashboard
+### 1. Customer Success Management (CSM) Dashboard
 * **Overview:** Delivered a high-impact dashboard in Looker Studio, used daily by executive and operational leadership to drive strategy.
 * **Technical Details:** Designed the solution end-to-end using Data Lakes architecture, complex SQL stored procedures, and comprehensive data cleansing.
 * **Impact:** Produced granular insights across the customer lifecycle, focusing on feature adoption trends, churn analysis, and acquisition patterns.
 
-### Sales Leads Performance Pipeline
+### 2. ProofHub - Operations & Task Management
+* **Overview:** Developed an end-to-end analytical solution for organizational task management, unlocking insights from previously unanalyzed data.
+* **Technical Details:** Built an ELT pipeline using Airbyte and SSIS to architect a Data Lake within the DWH, using complex SQL to calculate productivity metrics.
+* **Impact:** Created a central dashboard for monitoring open tasks, work-time per task, completion percentages, and workload distribution per employee to optimize team efficiency.
+
+### 3. Sales Leads Performance Pipeline
 * **Overview:** Built an executive-level dashboard to provide senior leadership with a clear view of proposals, conversions, and lead cycles (including a 19-day median lead lifetime).
 * **Technical Details:** Developed end-to-end using Data Lakes, complex SQL queries, and ETL workflows via SSIS.
 * **Impact:** Generated insights on lead performance and revenue potential to optimize sales processes.
 
-### Fraud Prevention & Operational Optimization
+---
+
+## 🛡 Fraud Prevention & Operational Optimization
 * **Fraud Analytics:** Implemented advanced SQL-based analytics to identify suspicious activity and strengthen fraud prevention measures.
 * **Cost Reduction:** Optimized routing logic and provider prefixes using SQL and Linux, delivering measurable cost reductions and improved efficiency.
 
