@@ -1,7 +1,7 @@
 # Hi there, I'm Adir Mamou 👋
 ### Data Analyst | [cite_start]SQL & ETL Developer [cite: 15]
 
-[cite_start]Data Analyst and SQL Developer with 2 years of experience delivering valuable insights to optimize strategic business decisions[cite: 16]. [cite_start]I specialize in managing large-scale datasets, building end-to-end ETL processes, and developing interactive BI dashboards to drive organizational efficiency[cite: 25]. [cite_start]I am a proactive problem-solver with a strong ability to learn new technologies and deliver results in fast-paced environments[cite: 19].
+Data Analyst and SQL Developer with 2 years of experience delivering valuable insights to optimize strategic business decisions[cite: 16]. [cite_start]I specialize in managing large-scale datasets, building end-to-end ETL processes, and developing interactive BI dashboards to drive organizational efficiency[cite: 25]. [cite_start]I am a proactive problem-solver with a strong ability to learn new technologies and deliver results in fast-paced environments[cite: 19].
 
 ---
 
