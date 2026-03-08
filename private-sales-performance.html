@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Dept. Sales Performance | Adir Mamou</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; font-family: 'Inter', sans-serif; }
+
+        /* Back button */
+        .back-btn { display: inline-flex; align-items: center; gap: 0.5rem; color: #94a3b8; font-size: 0.85rem; font-weight: 600; transition: color 0.2s; text-decoration: none; }
+        .back-btn:hover { color: #38bdf8; }
+
+        /* Tag */
+        .tag { font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 9999px; font-weight: bold; text-transform: uppercase; }
+
+        /* SQL Tabs */
+        .sql-tab { cursor: pointer; padding: 0.5rem 1.2rem; border-radius: 0.5rem 0.5rem 0 0; font-size: 0.78rem; font-weight: 600; color: #64748b; border: 1px solid transparent; border-bottom: none; transition: all 0.2s; white-space: nowrap; }
+        .sql-tab:hover { color: #94a3b8; background: #1e293b; }
+        .sql-tab.active { color: #38bdf8; background: #1e293b; border-color: #334155; }
+
+        /* Code block */
+        .code-wrapper { background: #1e293b; border: 1px solid #334155; border-radius: 0 0.75rem 0.75rem 0.75rem; overflow: hidden; }
+        pre[class*="language-"] { margin: 0; max-height: 480px; overflow-y: auto; font-size: 0.8rem; line-height: 1.6; background: #1e293b !important; }
+        code[class*="language-"] { background: #1e293b !important; }
+
+        /* Scrollbar styling */
+        pre::-webkit-scrollbar { width: 6px; height: 6px; }
+        pre::-webkit-scrollbar-track { background: #0f172a; }
+        pre::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+
+        /* Dashboard iframe */
+        .dashboard-frame { width: 100%; height: 820px; border: none; border-radius: 1rem; background: #0d0f14; }
+
+        /* Copy button */
+        .copy-btn { background: #334155; color: #94a3b8; border: none; padding: 0.35rem 0.8rem; border-radius: 0.4rem; font-size: 0.72rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem; }
+        .copy-btn:hover { background: #38bdf8; color: #0f172a; }
+
+        /* Download button */
+        .dl-btn { display: inline-flex; align-items: center; gap: 0.5rem; background: transparent; border: 1px solid #334155; color: #94a3b8; padding: 0.35rem 0.9rem; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+        .dl-btn:hover { border-color: #38bdf8; color: #38bdf8; }
+
+        /* Section header */
+        .sec-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+        .sec-header h2 { font-size: 1.5rem; font-weight: 700; }
+        .sec-line { flex: 1; height: 1px; background: #1e293b; }
+
+        /* File item */
+        .file-pill { display: inline-flex; align-items: center; gap: 0.5rem; background: #1e293b; border: 1px solid #334155; padding: 0.4rem 0.9rem; border-radius: 0.5rem; font-size: 0.75rem; color: #64748b; }
+        .file-pill i { color: #38bdf8; }
+
+        /* Panel */
+        .panel { background: #1e293b; border: 1px solid #334155; border-radius: 1rem; padding: 1.5rem; }
+
+        /* Tab panel content */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body class="max-w-6xl mx-auto px-6 py-10">
+
+    <!-- Top Nav -->
+    <div class="flex justify-between items-center mb-10">
+        <a href="index.html" class="back-btn">
+            <i class="fa-solid fa-arrow-left text-xs"></i> Back to Portfolio
+        </a>
+        <div class="flex gap-2">
+            <span class="tag bg-rose-500/20 text-rose-400">B2C</span>
+            <span class="tag bg-indigo-500/20 text-indigo-400">COMPLEX SQL</span>
+            <span class="tag bg-slate-500/20 text-slate-400">REPORTING</span>
+        </div>
+    </div>
+
+    <!-- Hero -->
+    <div class="mb-12">
+        <div class="flex items-center gap-4 mb-4">
+            <div class="text-rose-400 bg-rose-400/10 p-4 rounded-xl">
+                <i class="fa-solid fa-users fa-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-4xl font-extrabold">Private Dept. Sales Performance</h1>
+                <p class="text-slate-400 mt-1">Advanced reporting for the private sector — tracking lead quality, response SLA, and conversion KPIs using complex PostgreSQL + MSSQL logic.</p>
+            </div>
+        </div>
+
+        <!-- Tech stack pills -->
+        <div class="flex flex-wrap gap-2 mt-6">
+            <span class="file-pill"><i class="fa-solid fa-database"></i> PostgreSQL</span>
+            <span class="file-pill"><i class="fa-solid fa-database"></i> MSSQL / SSIS</span>
+            <span class="file-pill"><i class="fa-solid fa-chart-bar"></i> Looker Studio</span>
+            <span class="file-pill"><i class="fa-solid fa-code"></i> Views & Functions</span>
+            <span class="file-pill"><i class="fa-solid fa-gears"></i> Stored Procedures</span>
+            <span class="file-pill"><i class="fa-solid fa-warehouse"></i> DWH / ETL</span>
+        </div>
+    </div>
+
+    <!-- Dashboard Section -->
+    <div class="mb-14">
+        <div class="sec-header">
+            <span class="text-sky-400 text-sm font-bold uppercase tracking-widest">Dashboard</span>
+            <div class="sec-line"></div>
+            <span class="text-slate-500 text-xs font-mono">Feb 2026 · 557 Leads</span>
+        </div>
+        <div class="panel p-0 overflow-hidden">
+            <div class="flex items-center justify-between px-4 py-3 border-b border-slate-700/60">
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-rose-500/80"></span>
+                    <span class="w-3 h-3 rounded-full bg-amber-500/80"></span>
+                    <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
+                    <span class="ml-3 text-slate-500 text-xs font-mono">leads_dashboard.html</span>
+                </div>
+                <a href="leads_dashboard.html" target="_blank" class="dl-btn">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> Open Full Screen
+                </a>
+            </div>
+            <iframe src="leads_dashboard.html" class="dashboard-frame" title="Sales Leads Dashboard"></iframe>
+        </div>
+    </div>
+
+    <!-- SQL Files Section -->
+    <div class="mb-14">
+        <div class="sec-header">
+            <span class="text-sky-400 text-sm font-bold uppercase tracking-widest">SQL Source Files</span>
+            <div class="sec-line"></div>
+            <span class="text-slate-500 text-xs font-mono">4 files</span>
+        </div>
+
+        <!-- Tabs -->
+        <div class="flex gap-1 overflow-x-auto pb-0 border-b border-slate-700/0">
+            <button class="sql-tab active" onclick="switchTab(0)" id="tab-0">
+                <i class="fa-solid fa-code text-sky-400 mr-1 text-xs"></i>View
+            </button>
+            <button class="sql-tab" onclick="switchTab(1)" id="tab-1">
+                <i class="fa-solid fa-bolt text-amber-400 mr-1 text-xs"></i>Fn: Business Hours
+            </button>
+            <button class="sql-tab" onclick="switchTab(2)" id="tab-2">
+                <i class="fa-solid fa-bolt text-amber-400 mr-1 text-xs"></i>Fn: Interactions
+            </button>
+            <button class="sql-tab" onclick="switchTab(3)" id="tab-3">
+                <i class="fa-solid fa-gears text-purple-400 mr-1 text-xs"></i>Procedure: SSIS Load
+            </button>
+        </div>
+
+        <!-- Code Panels -->
+        <div class="code-wrapper">
+            <!-- Toolbar -->
+            <div class="flex items-center justify-between px-4 py-2 border-b border-slate-700/60 bg-slate-800/50">
+                <span class="text-slate-400 text-xs font-mono" id="current-filename">View_-_Sales_Leads_Score_Dashboard.sql</span>
+                <div class="flex gap-2">
+                    <button class="copy-btn" onclick="copyCode()"><i class="fa-regular fa-copy text-xs"></i> Copy</button>
+                    <a class="dl-btn" id="download-btn" href="#" download><i class="fa-solid fa-download text-xs"></i> Download</a>
+                </div>
+            </div>
+
+            <!-- Tab 0: View -->
+            <div class="tab-content active" id="content-0">
+                <pre class="language-sql"><code class="language-sql" id="code-0"></code></pre>
+            </div>
+            <!-- Tab 1: Function Business Hours -->
+            <div class="tab-content" id="content-1">
+                <pre class="language-sql"><code class="language-sql" id="code-1"></code></pre>
+            </div>
+            <!-- Tab 2: Function Interactions -->
+            <div class="tab-content" id="content-2">
+                <pre class="language-sql"><code class="language-sql" id="code-2"></code></pre>
+            </div>
+            <!-- Tab 3: Procedure SSIS -->
+            <div class="tab-content" id="content-3">
+                <pre class="language-sql"><code class="language-sql" id="code-3"></code></pre>
+            </div>
+        </div>
+
+        <!-- Download all -->
+        <div class="mt-4 flex flex-wrap gap-3">
+            <span class="text-slate-500 text-xs font-semibold self-center uppercase tracking-wider">Download:</span>
+            <a href="sql/View_-_Sales_Leads_Score_Dashboard.sql" download class="dl-btn"><i class="fa-solid fa-download text-xs"></i> View_Sales_Leads_Score_Dashboard.sql</a>
+            <a href="sql/Function_-_Business_Hours_First_Response_Time_Calculator.sql" download class="dl-btn"><i class="fa-solid fa-download text-xs"></i> Fn_Business_Hours.sql</a>
+            <a href="sql/Function_-_Get_Matched_Interactions_for_Current_Month.sql" download class="dl-btn"><i class="fa-solid fa-download text-xs"></i> Fn_Get_Interactions.sql</a>
+            <a href="sql/Procedure_-_SSIS_Sales_Lead_Performance_DWH_Load.sql" download class="dl-btn"><i class="fa-solid fa-download text-xs"></i> Proc_SSIS_DWH_Load.sql</a>
+        </div>
+    </div>
+
+    <!-- Architecture Summary -->
+    <div class="mb-14">
+        <div class="sec-header">
+            <span class="text-sky-400 text-sm font-bold uppercase tracking-widest">How It Works</span>
+            <div class="sec-line"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="panel text-center">
+                <div class="text-amber-400 text-2xl mb-3"><i class="fa-solid fa-bolt"></i></div>
+                <div class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-2">Function 1</div>
+                <div class="text-sm font-semibold mb-1">Business Hours Calculator</div>
+                <div class="text-slate-500 text-xs">Calculates first response time in working hours only (Sun–Thu, 09:00–18:00)</div>
+            </div>
+            <div class="panel text-center">
+                <div class="text-amber-400 text-2xl mb-3"><i class="fa-solid fa-bolt"></i></div>
+                <div class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-2">Function 2</div>
+                <div class="text-sm font-semibold mb-1">Matched Interactions</div>
+                <div class="text-slate-500 text-xs">Returns all current-month customer interactions for Product A leads</div>
+            </div>
+            <div class="panel text-center">
+                <div class="text-sky-400 text-2xl mb-3"><i class="fa-solid fa-eye"></i></div>
+                <div class="text-xs font-bold text-sky-400 uppercase tracking-wider mb-2">View</div>
+                <div class="text-sm font-semibold mb-1">Lead Score Dashboard</div>
+                <div class="text-slate-500 text-xs">Aggregates all KPIs, flags, and quality scores into one reporting view</div>
+            </div>
+            <div class="panel text-center">
+                <div class="text-purple-400 text-2xl mb-3"><i class="fa-solid fa-gears"></i></div>
+                <div class="text-xs font-bold text-purple-400 uppercase tracking-wider mb-2">Procedure</div>
+                <div class="text-sm font-semibold mb-1">SSIS DWH Load</div>
+                <div class="text-slate-500 text-xs">SSIS procedure that queries the PostgreSQL view via linked server into MSSQL DWH</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center text-slate-600 text-sm border-t border-slate-800 pt-8 mb-10">
+        <a href="index.html" class="back-btn justify-center mb-4 inline-flex"><i class="fa-solid fa-arrow-left text-xs"></i> Back to Portfolio</a><br>
+        &copy; 2026 Adir Mamou — Data Analytics Portfolio
+    </footer>
+
+    <script>
+        const files = [
+            {
+                name: "View_-_Sales_Leads_Score_Dashboard.sql",
+                path: "sql/View_-_Sales_Leads_Score_Dashboard.sql",
+                code: `-- public.vw_sales_leads_score source
+CREATE OR REPLACE VIEW public.vw_sales_leads_score
+AS WITH matchedinteractions AS (
+         SELECT get_matched_interactions_optimized."Customer_IDs",
+            get_matched_interactions_optimized."Type Of Interaction",
+            get_matched_interactions_optimized."Date",
+            get_matched_interactions_optimized."Duration",
+            get_matched_interactions_optimized."Direction",
+            get_matched_interactions_optimized."Status",
+            get_matched_interactions_optimized."Phone Number",
+            get_matched_interactions_optimized."User",
+            get_matched_interactions_optimized."Department",
+            get_matched_interactions_optimized."From Email",
+            get_matched_interactions_optimized."To Email"
+           FROM get_matched_interactions_optimized() get_matched_interactions_optimized("Customer_IDs", "Type Of Interaction", "Date", "Duration", "Direction", "Status", "Phone Number", "User", "Department", "From Email", "To Email")
+        ), activeleads AS (
+         SELECT l.leadid,
+            (l.first_name::text || ' '::text) || l.last_name::text AS full_name,
+            l.date_entered,
+            l.lead_source,
+                CASE
+                    WHEN l.country::text = '0'::text OR l.country::text = ''::text THEN 'None'::character varying
+                    ELSE l.country
+                END AS "Country",
+            l.assign_to,
+            l.status,
+            l.leadlifetime AS "LeadLifeTime(Days)",
+                CASE
+                    WHEN l.accountid::text = lc.accountid::text THEN 'Y'::text
+                    ELSE 'N'::text
+                END AS "Sold (Y/N)"
+           FROM "Leads" l
+             LEFT JOIN customers lc ON lc.accountid::text = l.accountid::text
+          WHERE l.product::text = 'product_a'::text
+            AND l.date_entered >= date_trunc('month'::text, CURRENT_DATE::timestamp with time zone)::date
+            AND l.leadid::text <> 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'::text  -- exclude internal test record
+        ), leadinteractions AS (
+         SELECT ll.leadid,
+            ll.full_name,
+            ll.date_entered,
+            ll.lead_source,
+                CASE
+                    WHEN i."Type Of Interaction"::text = 'call'::text THEN 'Phone'::text
+                    WHEN i."Type Of Interaction"::text = 'omni_channel'::text THEN 'WhatsApp'::text
+                    WHEN i."Type Of Interaction"::text = 'email'::text THEN 'Email'::text
+                    ELSE 'Unknown'::text
+                END AS "Entry Channel",
+            ll."Country",
+            ll.assign_to,
+            ll.status,
+            ll."Sold (Y/N)",
+            ll."LeadLifeTime(Days)",
+            i."Date" AS "First Interaction DateTime"
+           FROM activeleads ll
+             LEFT JOIN LATERAL ( SELECT mi."Type Of Interaction",
+                    mi."Date"
+                   FROM matchedinteractions mi
+                  WHERE mi."Customer_IDs"::text ~~ (('%'::text || ll.leadid::text) || '%'::text) AND mi."Date" >= ll.date_entered
+                  ORDER BY mi."Date"
+                 LIMIT 1) i ON true
+          WHERE ll.full_name !~~* '%test%'::text
+        ), unique_leads_per_customer AS (
+         SELECT DISTINCT mi."Customer_IDs",
+            unnest(string_to_array(mi."Customer_IDs"::text, ','::text)) AS leadid_from_interactions
+           FROM leadinteractions lis
+             LEFT JOIN matchedinteractions mi ON mi."Customer_IDs"::text ~~ (('%'::text || lis.leadid::text) || '%'::text)
+        ), nextleadpercustomer AS (
+         SELECT DISTINCT ulpc.leadid_from_interactions,
+            lis.date_entered,
+            lead(lis.date_entered) OVER (PARTITION BY ulpc."Customer_IDs" ORDER BY lis.date_entered) AS next_date_entered_lead,
+            lag(lis.status) OVER (PARTITION BY ulpc."Customer_IDs" ORDER BY lis.date_entered) AS "Previous Status",
+                CASE
+                    WHEN
+                    CASE
+                        WHEN ulpc.leadid_from_interactions IS NOT NULL AND ulpc.leadid_from_interactions <> ''::text THEN array_length(string_to_array(ulpc."Customer_IDs"::text, ','::text), 1)
+                        ELSE 0
+                    END > 1 THEN 'Y'::text
+                    ELSE 'N'::text
+                END AS "Is Returning",
+            array_to_string(array_remove(string_to_array(ulpc."Customer_IDs"::text, ','::text), ulpc.leadid_from_interactions), ','::text) AS "Previous LeadIDs"
+           FROM unique_leads_per_customer ulpc
+             LEFT JOIN leadinteractions lis ON lis.leadid::text = ulpc.leadid_from_interactions
+        ), calculated_values AS (
+         SELECT lis.leadid, lis.full_name, lis.date_entered, lis.lead_source, lis."Entry Channel",
+            lis."Country", lis.assign_to, lis.status, lis."Sold (Y/N)", lis."LeadLifeTime(Days)",
+            lis."First Interaction DateTime",
+                CASE
+                    WHEN lis."First Interaction DateTime" IS NULL THEN NULL::double precision
+                    ELSE business_hours_diff_for_leads(lis.date_entered::timestamp with time zone, lis."First Interaction DateTime"::timestamp with time zone)::double precision
+                END AS "First Response Time (hrs)",
+            COALESCE(nlpc."Is Returning", 'N'::text) AS "Is Returning",
+            COALESCE(nlpc."Previous LeadIDs", 'None'::text) AS "Previous LeadIDs",
+            nlpc."Previous Status",
+            sum(CASE WHEN mi."Date" >= lis.date_entered AND (mi."Date" < nlpc.next_date_entered_lead OR nlpc.next_date_entered_lead IS NULL) THEN 1 ELSE 0 END) AS "Total Interactions",
+            sum(CASE WHEN mi."Status"::text = 'answered'::text AND mi."Date" >= lis.date_entered AND (mi."Date" < nlpc.next_date_entered_lead OR nlpc.next_date_entered_lead IS NULL) THEN 1 ELSE 0 END) AS "Answered Calls",
+            sum(CASE WHEN mi."Status"::text = 'not_answered'::text AND mi."Date" >= lis.date_entered AND (mi."Date" < nlpc.next_date_entered_lead OR nlpc.next_date_entered_lead IS NULL) THEN 1 ELSE 0 END) AS "Unanswered Calls",
+            sum(CASE WHEN mi."Type Of Interaction"::text = 'omni_channel'::text AND mi."Date" >= lis.date_entered AND (mi."Date" < nlpc.next_date_entered_lead OR nlpc.next_date_entered_lead IS NULL) THEN 1 ELSE 0 END) AS "WhatsApp Messages",
+            sum(CASE WHEN mi."Type Of Interaction"::text = 'email'::text AND mi."Date" >= lis.date_entered AND (mi."Date" < nlpc.next_date_entered_lead OR nlpc.next_date_entered_lead IS NULL) THEN 1 ELSE 0 END) AS "Emails"
+           FROM leadinteractions lis
+             LEFT JOIN nextleadpercustomer nlpc ON lis.leadid::text = nlpc.leadid_from_interactions
+             LEFT JOIN matchedinteractions mi ON mi."Customer_IDs"::text ~~ (('%'::text || lis.leadid::text) || '%'::text)
+          GROUP BY lis.leadid, lis.full_name, lis.date_entered, lis.lead_source, lis."Entry Channel", lis."Country",
+            lis.assign_to, lis.status, lis."Sold (Y/N)", lis."LeadLifeTime(Days)", lis."First Interaction DateTime",
+            nlpc.next_date_entered_lead, nlpc."Is Returning", nlpc."Previous LeadIDs",
+            (business_hours_diff_for_leads(lis.date_entered::timestamp with time zone, lis."First Interaction DateTime"::timestamp with time zone)::double precision),
+            nlpc."Previous Status"
+        ), flags AS (
+         SELECT cv.*,
+                CASE WHEN cv."First Response Time (hrs)" > 4 THEN 'Y' ELSE 'N' END AS "SLA Breach",
+                CASE WHEN cv.status::text = 'New' AND cv."LeadLifeTime(Days)" > 1 THEN 'Y' ELSE 'N' END AS "Stale NEW",
+                CASE WHEN cv."Total Interactions" = 0 AND cv.status::text <> 'Converted' AND cv.lead_source::text <> 'Internet Site' THEN 'Y' ELSE 'N' END AS "Zero Contact",
+                CASE WHEN cv.assign_to::text = 'unassigned' THEN 'Y' ELSE 'N' END AS "Unassigned",
+                CASE WHEN cv."Is Returning" = 'Y' AND cv."Previous Status"::text <> 'Converted' AND cv."First Response Time (hrs)" > 4 THEN 'Y' ELSE 'N' END AS "Returning Lost",
+                CASE WHEN cv."Answered Calls" = 0 AND cv."Unanswered Calls" = 0 THEN 'Y' ELSE 'N' END AS "No Outbound Calls",
+                CASE WHEN cv."LeadLifeTime(Days)" >= 5 THEN 'Y' ELSE 'N' END AS "Overdue LifeTime"
+           FROM calculated_values cv
+        ), leadscore AS (
+         SELECT f.*,
+                CASE
+                    WHEN f."SLA Breach" = 'Y' OR f."Unassigned" = 'Y' OR f."Returning Lost" = 'Y' OR f."Overdue LifeTime" = 'Y' THEN 'Critical'
+                    WHEN f."Stale NEW" = 'Y' OR f."Zero Contact" = 'Y' OR f."No Outbound Calls" = 'Y' THEN 'Problematic'
+                    WHEN f."SLA Breach" = 'N' AND f."Unassigned" = 'N' AND f."Stale NEW" = 'N'
+                         AND f."Zero Contact" = 'N' AND f."No Outbound Calls" = 'N'
+                         AND f."Overdue LifeTime" = 'N' AND f."Returning Lost" = 'N'
+                         AND f."Answered Calls" >= 1 AND f."First Response Time (hrs)" <= 2 AND f."LeadLifeTime(Days)" < 5 THEN 'Excellent'
+                    ELSE 'Good'
+                END AS "Lead Quality Score"
+           FROM flags f
+        )
+ SELECT leadid, full_name, date_entered, lead_source, "Entry Channel", "Country", assign_to, status,
+    "Sold (Y/N)", "LeadLifeTime(Days)", "First Interaction DateTime", "First Response Time (hrs)",
+    "Is Returning", "Previous LeadIDs", "Previous Status", "Total Interactions", "Answered Calls",
+    "Unanswered Calls", "WhatsApp Messages", "Emails", "SLA Breach", "Stale NEW", "Zero Contact",
+    "Unassigned", "Returning Lost", "No Outbound Calls", "Overdue LifeTime", "Lead Quality Score",
+    CASE WHEN "Lead Quality Score" = 'Critical' THEN 1 WHEN "Lead Quality Score" = 'Problematic' THEN 2
+         WHEN "Lead Quality Score" = 'Good' THEN 3 WHEN "Lead Quality Score" = 'Excellent' THEN 5
+    END +
+    CASE WHEN "Sold (Y/N)" = 'Y' AND status::text = 'Converted' THEN 5 ELSE 0 END AS "Lead Total Score"
+   FROM leadscore;`
+            },
+            {
+                name: "Function_-_Business_Hours_First_Response_Time_Calculator.sql",
+                path: "sql/Function_-_Business_Hours_First_Response_Time_Calculator.sql",
+                code: `-- DROP FUNCTION public.business_hours_diff_for_leads(timestamptz, timestamptz);
+CREATE OR REPLACE FUNCTION public.business_hours_diff_for_leads(
+    lead_entered timestamp with time zone,
+    first_interaction timestamp with time zone
+)
+ RETURNS numeric
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+    current_ts TIMESTAMPTZ := lead_entered;
+    total_hours NUMERIC := 0;
+    WorkDay_start TIME := '09:00'; -- Company start hour
+    WorkDay_end   TIME := '18:00'; -- Company end hour
+    today_business_start TIMESTAMPTZ;
+    today_business_end   TIMESTAMPTZ;
+BEGIN
+    IF lead_entered >= first_interaction THEN
+        RETURN 0;
+    END IF;
+
+    WHILE current_ts < first_interaction LOOP
+        -- Skip Friday (5) and Saturday (6) — Israeli work week
+        IF EXTRACT(DOW FROM current_ts) NOT IN (5, 6) THEN
+            today_business_start := date_trunc('day', current_ts) + WorkDay_start;
+            today_business_end   := date_trunc('day', current_ts) + WorkDay_end;
+
+            -- Don't count hours before opening time
+            IF current_ts < today_business_start THEN
+                current_ts := today_business_start;
+            END IF;
+
+            IF current_ts < today_business_end THEN
+                total_hours := total_hours +
+                    EXTRACT(EPOCH FROM (
+                        LEAST(first_interaction, today_business_end)
+                        - current_ts
+                    )) / 3600;
+            END IF;
+        END IF;
+
+        -- Advance to next business day start
+        current_ts := date_trunc('day', current_ts) + INTERVAL '1 day' + WorkDay_start;
+    END LOOP;
+
+    RETURN round(total_hours);
+END;
+$function$`
+            },
+            {
+                name: "Function_-_Get_Matched_Interactions_for_Current_Month.sql",
+                path: "sql/Function_-_Get_Matched_Interactions_for_Current_Month.sql",
+                code: `CREATE OR REPLACE FUNCTION public.get_matched_interactions()
+ RETURNS TABLE(
+    "Customer_IDs"       character varying,
+    "Type Of Interaction" character varying,
+    "Date"               timestamp without time zone,
+    "Duration"           integer,
+    "Direction"          character varying,
+    "Status"             character varying,
+    "Phone Number"       character varying,
+    "User"               character varying,
+    "Department"         character varying,
+    "From Email"         character varying,
+    "To Email"           character varying
+ )
+ LANGUAGE sql
+ STABLE
+AS $function$
+    SELECT
+        i.customer_ids,
+        i.interaction,
+        i."date",
+        i.duration,
+        COALESCE(i.direction, 'NONE') AS direction,
+        CASE
+            WHEN i.interaction = 'email' THEN 'Sent'
+            ELSE i.status
+        END AS status,
+        i.phone_number,
+        i.admin_user_name,
+        i.department,
+        i.from_email,
+        i.to_email
+    FROM public.interactions i
+    WHERE i.products = 'lead - product_a'
+      AND EXISTS (
+          SELECT 1
+          FROM public."Leads" l
+          WHERE l.product = 'product_a'
+            AND date_trunc('month', l.date_entered) = date_trunc('month', CURRENT_DATE)
+            AND i.customer_ids LIKE '%' || l.leadid || '%'
+      );
+$function$`
+            },
+            {
+                name: "Procedure_-_SSIS_Sales_Lead_Performance_DWH_Load.sql",
+                path: "sql/Procedure_-_SSIS_Sales_Lead_Performance_DWH_Load.sql",
+                code: `USE [SalesDB]
+GO
+
+/****** Object: StoredProcedure [dbo].[SSIS_product_a_sales_lead_performance] ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:      Adir Mamou
+-- Create date: 2026-02-26
+-- Description: Product A Sales Performance With Current Month Leads
+--              Fetches latest data from PostgreSQL DWH via linked server
+-- =============================================
+ALTER PROCEDURE [dbo].[SSIS_product_a_sales_lead_performance]
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Fetch the current month leads score view from the data warehouse
+    SELECT *
+    FROM OPENQUERY(
+        [DataWarehouse],
+        'SELECT * FROM public.vw_sales_leads_score'
+    );
+
+END
+GO`
+            }
+        ];
+
+        // Populate code blocks
+        files.forEach((file, i) => {
+            const el = document.getElementById('code-' + i);
+            el.textContent = file.code;
+            Prism.highlightElement(el);
+        });
+
+        let currentTab = 0;
+
+        function switchTab(index) {
+            // Hide all
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.sql-tab').forEach(el => el.classList.remove('active'));
+            // Show selected
+            document.getElementById('content-' + index).classList.add('active');
+            document.getElementById('tab-' + index).classList.add('active');
+            // Update toolbar
+            document.getElementById('current-filename').textContent = files[index].name;
+            document.getElementById('download-btn').href = files[index].path;
+            document.getElementById('download-btn').download = files[index].name;
+            currentTab = index;
+        }
+
+        function copyCode() {
+            navigator.clipboard.writeText(files[currentTab].code).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.innerHTML = '<i class="fa-solid fa-check text-xs"></i> Copied!';
+                btn.style.background = '#22c55e';
+                btn.style.color = '#0f172a';
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fa-regular fa-copy text-xs"></i> Copy';
+                    btn.style.background = '';
+                    btn.style.color = '';
+                }, 2000);
+            });
+        }
+
+        // Init download button
+        document.getElementById('download-btn').href = files[0].path;
+        document.getElementById('download-btn').download = files[0].name;
+    </script>
+</body>
+</html>
