@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Success (CSM) | Adir Mamou</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; font-family: 'Inter', sans-serif; }
+        .back-btn { display: inline-flex; align-items: center; gap: 0.5rem; color: #94a3b8; font-size: 0.85rem; font-weight: 600; transition: color 0.2s; text-decoration: none; }
+        .back-btn:hover { color: #38bdf8; }
+        .tag { font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 9999px; font-weight: bold; text-transform: uppercase; }
+        .sql-tab { cursor: pointer; padding: 0.5rem 1.2rem; border-radius: 0.5rem 0.5rem 0 0; font-size: 0.78rem; font-weight: 600; color: #64748b; border: 1px solid transparent; border-bottom: none; transition: all 0.2s; white-space: nowrap; }
+        .sql-tab:hover { color: #94a3b8; background: #1e293b; }
+        .sql-tab.active { color: #38bdf8; background: #1e293b; border-color: #334155; }
+        .code-wrapper { background: #1e293b; border: 1px solid #334155; border-radius: 0 0.75rem 0.75rem 0.75rem; overflow: hidden; }
+        pre[class*="language-"] { margin: 0; max-height: 480px; overflow-y: auto; font-size: 0.8rem; line-height: 1.6; background: #1e293b !important; }
+        code[class*="language-"] { background: #1e293b !important; }
+        pre::-webkit-scrollbar { width: 6px; height: 6px; }
+        pre::-webkit-scrollbar-track { background: #0f172a; }
+        pre::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        .copy-btn { background: #334155; color: #94a3b8; border: none; padding: 0.35rem 0.8rem; border-radius: 0.4rem; font-size: 0.72rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem; }
+        .copy-btn:hover { background: #38bdf8; color: #0f172a; }
+        .dl-btn { display: inline-flex; align-items: center; gap: 0.5rem; background: transparent; border: 1px solid #334155; color: #94a3b8; padding: 0.35rem 0.9rem; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+        .dl-btn:hover { border-color: #38bdf8; color: #38bdf8; }
+        .sec-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+        .sec-line { flex: 1; height: 1px; background: #1e293b; }
+        .file-pill { display: inline-flex; align-items: center; gap: 0.5rem; background: #1e293b; border: 1px solid #334155; padding: 0.4rem 0.9rem; border-radius: 0.5rem; font-size: 0.75rem; color: #64748b; }
+        .file-pill i { color: #38bdf8; }
+        .panel { background: #1e293b; border: 1px solid #334155; border-radius: 1rem; padding: 1.5rem; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* Screenshot gallery */
+        .screenshot-container { position: relative; overflow: hidden; border-radius: 0.75rem; background: #1e293b; border: 1px solid #334155; cursor: pointer; transition: transform 0.2s; }
+        .screenshot-container:hover { transform: translateY(-3px); border-color: #38bdf8; }
+        .screenshot-container img { width: 100%; display: block; }
+        .screenshot-label { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(15,23,42,0.95)); padding: 1.5rem 1rem 0.75rem; font-size: 0.78rem; font-weight: 600; color: #94a3b8; }
+
+        /* Lightbox */
+        .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 1000; align-items: center; justify-content: center; padding: 2rem; }
+        .lightbox.open { display: flex; }
+        .lightbox img { max-width: 100%; max-height: 90vh; border-radius: 0.75rem; object-fit: contain; }
+        .lightbox-close { position: absolute; top: 1.5rem; right: 1.5rem; background: #334155; border: none; color: #f8fafc; width: 2.5rem; height: 2.5rem; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .lightbox-close:hover { background: #ef4444; }
+        .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); background: #334155; border: none; color: #f8fafc; width: 3rem; height: 3rem; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .lightbox-nav:hover { background: #38bdf8; color: #0f172a; }
+        .lightbox-prev { left: 1.5rem; }
+        .lightbox-next { right: 1.5rem; }
+    </style>
+</head>
+<body class="max-w-6xl mx-auto px-6 py-10">
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+        <button class="lightbox-close" onclick="closeLightboxBtn()"><i class="fa-solid fa-xmark"></i></button>
+        <button class="lightbox-nav lightbox-prev" onclick="changeImage(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+        <img id="lightbox-img" src="" alt="Dashboard Screenshot">
+        <button class="lightbox-nav lightbox-next" onclick="changeImage(1)"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+
+    <!-- Top Nav -->
+    <div class="flex justify-between items-center mb-10">
+        <a href="index.html" class="back-btn">
+            <i class="fa-solid fa-arrow-left text-xs"></i> Back to Portfolio
+        </a>
+        <div class="flex gap-2">
+            <span class="tag bg-emerald-500/20 text-emerald-400">LOOKER STUDIO</span>
+            <span class="tag bg-sky-500/20 text-sky-400">ETL</span>
+            <span class="tag bg-purple-500/20 text-purple-400">SSIS</span>
+        </div>
+    </div>
+
+    <!-- Hero -->
+    <div class="mb-12">
+        <div class="flex items-center gap-4 mb-4">
+            <div class="text-emerald-400 bg-emerald-400/10 p-4 rounded-xl">
+                <i class="fa-solid fa-chart-pie fa-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-4xl font-extrabold">Customer Success (CSM)</h1>
+                <p class="text-slate-400 mt-1">End-to-end analytics solution tracking churn, feature adoption, and profitability trends across the customer lifecycle — powered by a multi-layer ETL pipeline from PostgreSQL DWH to MSSQL.</p>
+            </div>
+        </div>
+        <div class="flex flex-wrap gap-2 mt-6">
+            <span class="file-pill"><i class="fa-solid fa-database"></i> PostgreSQL</span>
+            <span class="file-pill"><i class="fa-solid fa-database"></i> MSSQL / SSIS</span>
+            <span class="file-pill"><i class="fa-solid fa-chart-line"></i> Looker Studio</span>
+            <span class="file-pill"><i class="fa-solid fa-eye"></i> Views & CTEs</span>
+            <span class="file-pill"><i class="fa-solid fa-gears"></i> Stored Procedures</span>
+            <span class="file-pill"><i class="fa-solid fa-water"></i> Data Lake</span>
+            <span class="file-pill"><i class="fa-solid fa-warehouse"></i> DWH / ETL</span>
+        </div>
+    </div>
+
+    <!-- Dashboard Screenshots -->
+    <div class="mb-14">
+        <div class="sec-header">
+            <span class="text-emerald-400 text-sm font-bold uppercase tracking-widest">Dashboard Screenshots</span>
+            <div class="sec-line"></div>
+            <span class="text-slate-500 text-xs font-mono">Looker Studio · Click to enlarge</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="screenshot-container" onclick="openLightbox(0)">
+                <img src="images/csm/csm-dashboard-monthly.png" alt="CSM Monthly Dashboard">
+                <div class="screenshot-label">
+                    <i class="fa-solid fa-table-cells-large text-emerald-400 mr-1 text-xs"></i>
+                    Monthly View — Feature Totals & Final Bills
+                </div>
+            </div>
+            <div class="screenshot-container" onclick="openLightbox(1)">
+                <img src="images/csm/csm-dashboard-quarterly.png" alt="CSM Quarterly Dashboard">
+                <div class="screenshot-label">
+                    <i class="fa-solid fa-chart-bar text-sky-400 mr-1 text-xs"></i>
+                    Quarterly View — Trends & Feature Changes
+                </div>
+            </div>
+        </div>
+        <p class="text-slate-600 text-xs mt-3 text-center font-mono">* Click any screenshot to view full size</p>
+    </div>
+
+    <!-- SQL Files -->
+    <div class="mb-14">
+        <div class="sec-header">
+            <span class="text-emerald-400 text-sm font-bold uppercase tracking-widest">SQL Source Files</span>
+            <div class="sec-line"></div>
+            <span class="text-slate-500 text-xs font-mono">2 files</span>
+        </div>
+
+        <div class="flex gap-1">
+            <button class="sql-tab active" onclick="switchTab(0)" id="tab-0">
+                <i class="fa-solid fa-eye text-sky-400 mr-1 text-xs"></i>View: CSM Dashboard
+            </button>
+            <button class="sql-tab" onclick="switchTab(1)" id="tab-1">
+                <i class="fa-solid fa-gears text-purple-400 mr-1 text-xs"></i>Procedure: DWH Lake Update
+            </button>
+        </div>
+
+        <div class="code-wrapper">
+            <div class="flex items-center justify-between px-4 py-2 border-b border-slate-700/60 bg-slate-800/50">
+                <span class="text-slate-400 text-xs font-mono" id="current-filename">View_For_CSM_DashBoard.sql</span>
+                <div class="flex gap-2">
+                    <button class="copy-btn" onclick="copyCode()"><i class="fa-regular fa-copy text-xs"></i> Copy</button>
+                    <a class="dl-btn" id="download-btn" href="sql/View_For_CSM_DashBoard.sql" download><i class="fa-solid fa-download text-xs"></i> Download</a>
+                </div>
+            </div>
+            <div class="tab-content active" id="content-0">
+                <pre class="language-sql"><code class="language-sql" id="code-0"></code></pre>
+            </div>
+            <div class="tab-content" id="content-1">
+                <pre class="language-sql"><code class="language-sql" id="code-1"></code></pre>
+            </div>
+        </div>
+
+        <div class="mt-4 flex flex-wrap gap-3">
+            <span class="text-slate-500 text-xs font-semibold self-center uppercase tracking-wider">Download:</span>
+            <a href="sql/View_For_CSM_DashBoard.sql" download class="dl-btn"><i class="fa-solid fa-download text-xs"></i> View_For_CSM_DashBoard.sql</a>
+            <a href="sql/Procedure_for_dwh_lake_that_will_update_automaticly_-_CSM.sql" download class="dl-btn"><i class="fa-solid fa-download text-xs"></i> Procedure_CSM_DWH_Lake_Update.sql</a>
+        </div>
+    </div>
+
+    <!-- Architecture -->
+    <div class="mb-14">
+        <div class="sec-header">
+            <span class="text-emerald-400 text-sm font-bold uppercase tracking-widest">How It Works</span>
+            <div class="sec-line"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="panel text-center">
+                <div class="text-sky-400 text-2xl mb-3"><i class="fa-solid fa-water"></i></div>
+                <div class="text-xs font-bold text-sky-400 uppercase tracking-wider mb-2">PostgreSQL DWH</div>
+                <div class="text-sm font-semibold mb-1">Lake_Billing_Cloud_per_feature</div>
+                <div class="text-slate-500 text-xs">Source billing data for PBX & TokOmni customers pulled from the data lake via linked server</div>
+            </div>
+            <div class="panel text-center">
+                <div class="text-purple-400 text-2xl mb-3"><i class="fa-solid fa-gears"></i></div>
+                <div class="text-xs font-bold text-purple-400 uppercase tracking-wider mb-2">SSIS Procedure</div>
+                <div class="text-sm font-semibold mb-1">SSIS_Lake_CSM_Cloud_Updated</div>
+                <div class="text-slate-500 text-xs">CURSOR loop handles Final Bill customers, backfills missing totals using LAG logic across 3 months, then loads last 6 months into MSSQL</div>
+            </div>
+            <div class="panel text-center">
+                <div class="text-emerald-400 text-2xl mb-3"><i class="fa-solid fa-eye"></i></div>
+                <div class="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2">PostgreSQL View</div>
+                <div class="text-sm font-semibold mb-1">public.csm</div>
+                <div class="text-slate-500 text-xs">Aggregates features, final bills, and month-over-month differences into the Looker Studio dashboard view</div>
+            </div>
+        </div>
+
+        <!-- Key metrics highlight -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+            <div class="panel text-center border-emerald-500/20 bg-emerald-500/5">
+                <div class="text-2xl font-bold text-emerald-400 font-mono">312</div>
+                <div class="text-slate-500 text-xs mt-1">Final Bill Customers</div>
+            </div>
+            <div class="panel text-center border-sky-500/20 bg-sky-500/5">
+                <div class="text-2xl font-bold text-sky-400 font-mono">65,400</div>
+                <div class="text-slate-500 text-xs mt-1">Total Final Bill Value</div>
+            </div>
+            <div class="panel text-center border-amber-500/20 bg-amber-500/5">
+                <div class="text-2xl font-bold text-amber-400 font-mono">16,213</div>
+                <div class="text-slate-500 text-xs mt-1">Customer Records</div>
+            </div>
+            <div class="panel text-center border-purple-500/20 bg-purple-500/5">
+                <div class="text-2xl font-bold text-purple-400 font-mono">6 mo</div>
+                <div class="text-slate-500 text-xs mt-1">Rolling Window Tracked</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center text-slate-600 text-sm border-t border-slate-800 pt-8 mb-10">
+        <a href="index.html" class="back-btn justify-center mb-4 inline-flex"><i class="fa-solid fa-arrow-left text-xs"></i> Back to Portfolio</a><br>
+        &copy; 2026 Adir Mamou — Data Analytics Portfolio
+    </footer>
+
+    <script>
+        const files = [
+            {
+                name: "View_For_CSM_DashBoard.sql",
+                path: "sql/View_For_CSM_DashBoard.sql",
+                code: `-- public.csm source
+
+CREATE OR REPLACE VIEW public.csm
+AS WITH first_columns AS (
+         SELECT lake_cloud_csm_updated.invoice_date,
+            sum(
+                CASE
+                    WHEN lake_cloud_csm_updated.if_final_bill = 'N'::bpchar THEN lake_cloud_csm_updated.current_month_total_features
+                    ELSE 0::numeric
+                END) AS "Total_Features",
+            sum(
+                CASE
+                    WHEN lake_cloud_csm_updated.if_final_bill = 'Y'::bpchar THEN lake_cloud_csm_updated.final_bill
+                    ELSE 0::numeric
+                END) AS final_bill,
+            sum(lake_cloud_csm_updated.diff_features) AS total_features_difference,
+            sum(
+                CASE
+                    WHEN lake_cloud_csm_updated.diff_features < 0::numeric THEN lake_cloud_csm_updated.diff_features
+                    ELSE NULL::numeric
+                END) AS total_decreasing_features
+           FROM lake_cloud_csm_updated
+          GROUP BY lake_cloud_csm_updated.invoice_date
+        )
+ SELECT invoice_date,
+    "Total_Features",
+    final_bill,
+    total_features_difference,
+    total_features_difference - final_bill AS "FeatureDiffMinusFinalBill",
+    total_decreasing_features
+   FROM first_columns
+  ORDER BY invoice_date;`
+            },
+            {
+                name: "Procedure_for_dwh_lake_that_will_update_automaticly_-_CSM.sql",
+                path: "sql/Procedure_for_dwh_lake_that_will_update_automaticly_-_CSM.sql",
+                code: `USE [CRM]
+GO
+/****** Object:  StoredProcedure [dbo].[SSIS_Lake_CSM_Cloud_Updated] ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:      Adir Mamou
+-- Create date: 2025-07-09
+-- Description: Update CSM Procedure
+-- =============================================
+ALTER PROCEDURE [dbo].[SSIS_Lake_CSM_Cloud_Updated]
+AS
+BEGIN
+
+declare @temp1 table (
+    invoice_date date,
+    domain varchar(100),
+    collectit_id int,
+    total_features_Curr numeric(18,2),
+    final_bill numeric(18,2),
+    IF_Final_Bill CHAR(1),
+    Prev_Month_Total numeric(18,2),
+    customer_name varchar(250)
+);
+
+WITH base_data AS (
+    SELECT
+        DATEFROMPARTS(YEAR(invoice_date), MONTH(invoice_date), 1) AS Invoice_Date,
+        LTRIM(RTRIM(LOWER(domain))) AS domain,
+        LTRIM(RTRIM(collectit_id)) AS collectit_id,
+        SUM(feature_total_price) AS total_features,
+        InvoiceNum,
+        SUM(CASE WHEN customerinvoicestatus = 'FINAL BILL' THEN feature_total_price ELSE 0 END) AS final_bill,
+        CASE
+            WHEN SUM(CASE WHEN customerinvoicestatus = 'FINAL BILL' THEN 1 ELSE 0 END) > 0 THEN 'Y'
+            ELSE 'N'
+        END AS IF_Final_Bill,
+        customer_name
+    FROM openquery([DWH], 'Select lbpf.*,
+        bc."InvoiceNum",
+        s.createdbydepartment
+        From "Lake_Billing_Cloud_per_feature" lbpf
+        inner join "Billing_Cloud" bc on bc."Invoice_id" = lbpf."invoice_id"
+            and lbpf."CustomerType" in (''pbx'',''tokomni'')
+        left join public.cloud_sales_mid s on s.collectit_id = bc.collectit_id
+        where invoice_date >= ''2024-12-01''
+        and lbpf.is_deleted = False
+        and bc.is_deleted = False
+        and invoice_date >= CURRENT_DATE - INTERVAL ''1 year''')
+    WHERE invoiceNum >= 4
+       OR createdbydepartment = 'Support'
+    GROUP BY
+        LTRIM(RTRIM(LOWER(domain))),
+        LTRIM(RTRIM(collectit_id)),
+        InvoiceNum,
+        YEAR(invoice_date),
+        MONTH(invoice_date),
+        customer_name
+),
+fix_total_features AS (
+    SELECT Invoice_Date, domain, collectit_id,
+        CASE WHEN total_features < 0 THEN 0 ELSE total_features END AS total_features_Curr,
+        final_bill, IF_Final_Bill, customer_name
+    FROM base_data
+),
+IF_dif AS (
+    SELECT Invoice_Date, domain, collectit_id, total_features_Curr,
+        final_Bill, IF_Final_Bill,
+        LAG(total_features_Curr) OVER (PARTITION BY domain, collectit_id ORDER BY Invoice_Date) AS Prev_Month_Total,
+        customer_name
+    FROM fix_total_features
+)
+INSERT INTO @temp1
+SELECT Invoice_Date, domain, collectit_id, total_features_Curr,
+       final_Bill, IF_Final_Bill, Prev_Month_Total, customer_name
+FROM IF_dif;
+
+-- CURSOR: Handle Final Bill customers — backfill final_bill from previous months
+DECLARE @Invoice_Date DATE, @domain VARCHAR(255), @collectit_id INT,
+        @total_features_Curr DECIMAL(18,2), @final_bill DECIMAL(18,2),
+        @IF_Final_Bill CHAR(1), @Prev_Month_Total DECIMAL(18,2), @customer_name VARCHAR(250);
+
+DECLARE check_FinalBill CURSOR FOR
+    SELECT Invoice_Date, domain, collectit_id, total_features_Curr,
+           final_Bill, IF_Final_Bill, Prev_Month_Total, customer_name
+    FROM @temp1
+    WHERE IF_Final_Bill = 'Y'
+    ORDER BY Invoice_Date, domain, collectit_id;
+
+OPEN check_FinalBill;
+FETCH NEXT FROM check_FinalBill INTO @Invoice_Date, @domain, @collectit_id,
+    @total_features_Curr, @final_bill, @IF_Final_Bill, @Prev_Month_Total, @customer_name;
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    DECLARE @prev_month_  DATE = DATEFROMPARTS(YEAR(DATEADD(MONTH,  0, @Invoice_Date)), MONTH(DATEADD(MONTH,  0, @Invoice_Date)), 1);
+    DECLARE @prev_month_1 DATE = DATEFROMPARTS(YEAR(DATEADD(MONTH, -1, @Invoice_Date)), MONTH(DATEADD(MONTH, -1, @Invoice_Date)), 1);
+    DECLARE @prev_month_2 DATE = DATEFROMPARTS(YEAR(DATEADD(MONTH, -2, @Invoice_Date)), MONTH(DATEADD(MONTH, -2, @Invoice_Date)), 1);
+
+    DECLARE @prev_total   DECIMAL(18,2);
+    DECLARE @prev_1_total DECIMAL(18,2);
+    DECLARE @prev_2_total DECIMAL(18,2);
+
+    SELECT @prev_total   = Prev_Month_Total FROM @temp1 WHERE invoice_date = @prev_month_  AND domain = @domain AND collectit_id = @collectit_id;
+    SELECT @prev_1_total = Prev_Month_Total FROM @temp1 WHERE invoice_date = @prev_month_1 AND domain = @domain AND collectit_id = @collectit_id AND IF_Final_Bill = 'N';
+    SELECT @prev_2_total = Prev_Month_Total FROM @temp1 WHERE invoice_date = @prev_month_2 AND domain = @domain AND collectit_id = @collectit_id AND IF_Final_Bill = 'N';
+
+    IF      @prev_total   > 0 AND @prev_total   IS NOT NULL
+        UPDATE @temp1 SET final_bill = @prev_total   WHERE Invoice_Date = @prev_month_ AND domain = @domain AND collectit_id = @collectit_id;
+    ELSE IF @prev_1_total > 0 AND @prev_1_total IS NOT NULL AND @prev_total IS NOT NULL
+        UPDATE @temp1 SET final_bill = @prev_1_total WHERE Invoice_Date = @prev_month_ AND domain = @domain AND collectit_id = @collectit_id;
+    ELSE IF @prev_2_total > 0 AND @prev_2_total IS NOT NULL AND @prev_total IS NOT NULL
+        UPDATE @temp1 SET final_bill = @prev_2_total WHERE Invoice_Date = @prev_month_ AND domain = @domain AND collectit_id = @collectit_id;
+
+    FETCH NEXT FROM check_FinalBill INTO @Invoice_Date, @domain, @collectit_id,
+        @total_features_Curr, @final_bill, @IF_Final_Bill, @Prev_Month_Total, @customer_name;
+END
+
+CLOSE check_FinalBill;
+DEALLOCATE check_FinalBill;
+
+-- Final output: last 6 months with feature diff
+WITH DiffFeatures AS (
+    SELECT invoice_date, domain, collectit_id,
+        total_features_Curr, final_bill, IF_Final_Bill, Prev_Month_Total,
+        CASE
+            WHEN IF_Final_Bill = 'N' AND (
+                (total_features_Curr > Prev_Month_Total AND Prev_Month_Total = 0)
+                OR (total_features_Curr = 0 AND Prev_Month_Total > 0)
+            ) THEN 0
+            WHEN IF_Final_Bill = 'N' THEN total_features_Curr - Prev_Month_Total
+            WHEN IF_Final_Bill = 'Y' THEN NULL
+        END AS DIF_Features,
+        customer_name
+    FROM @temp1
+)
+SELECT *
+FROM DiffFeatures
+WHERE Invoice_Date >= DATEADD(MM, -7, GETDATE()); -- Rolling 6-month window
+
+END`
+            }
+        ];
+
+        // Populate code
+        files.forEach((f, i) => {
+            const el = document.getElementById('code-' + i);
+            el.textContent = f.code;
+            Prism.highlightElement(el);
+        });
+
+        let currentTab = 0;
+
+        function switchTab(index) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.sql-tab').forEach(el => el.classList.remove('active'));
+            document.getElementById('content-' + index).classList.add('active');
+            document.getElementById('tab-' + index).classList.add('active');
+            document.getElementById('current-filename').textContent = files[index].name;
+            document.getElementById('download-btn').href = files[index].path;
+            document.getElementById('download-btn').download = files[index].name;
+            currentTab = index;
+        }
+
+        function copyCode() {
+            navigator.clipboard.writeText(files[currentTab].code).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.innerHTML = '<i class="fa-solid fa-check text-xs"></i> Copied!';
+                btn.style.background = '#22c55e';
+                btn.style.color = '#0f172a';
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fa-regular fa-copy text-xs"></i> Copy';
+                    btn.style.background = '';
+                    btn.style.color = '';
+                }, 2000);
+            });
+        }
+
+        // Lightbox
+        const images = [
+            'images/csm/csm-dashboard-monthly.png',
+            'images/csm/csm-dashboard-quarterly.png'
+        ];
+        let currentImage = 0;
+
+        function openLightbox(index) {
+            currentImage = index;
+            document.getElementById('lightbox-img').src = images[index];
+            document.getElementById('lightbox').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox(e) {
+            if (e.target === document.getElementById('lightbox')) {
+                closeLightboxBtn();
+            }
+        }
+
+        function closeLightboxBtn() {
+            document.getElementById('lightbox').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        function changeImage(dir) {
+            currentImage = (currentImage + dir + images.length) % images.length;
+            document.getElementById('lightbox-img').src = images[currentImage];
+        }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeLightboxBtn();
+            if (e.key === 'ArrowLeft') changeImage(-1);
+            if (e.key === 'ArrowRight') changeImage(1);
+        });
+
+        // Init download btn
+        document.getElementById('download-btn').download = files[0].name;
+    </script>
+</body>
+</html>
