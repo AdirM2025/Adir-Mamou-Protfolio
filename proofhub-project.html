@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProofHub Operations | Adir Mamou Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; font-family: 'Inter', sans-serif; }
+        .back-btn { border: 1px solid #334155; color: #94a3b8; padding: 0.4rem 1rem; border-radius: 9999px; font-size: 0.8rem; transition: all 0.2s; }
+        .back-btn:hover { border-color: #38bdf8; color: #38bdf8; }
+        .tag { font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 9999px; font-weight: bold; text-transform: uppercase; }
+        .section-card { background-color: #1e293b; border-radius: 1.5rem; padding: 2rem; border: 1px solid #334155; }
+        .tab-btn { padding: 0.5rem 1.25rem; border-radius: 0.5rem; font-size: 0.85rem; font-weight: 600; transition: all 0.2s; color: #94a3b8; }
+        .tab-btn.active { background-color: #0ea5e9; color: white; }
+        .tab-btn:hover:not(.active) { color: #38bdf8; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        pre code.hljs { border-radius: 1rem; font-size: 0.82rem; }
+        .dash-img { border-radius: 1rem; border: 1px solid #334155; width: 100%; cursor: zoom-in; transition: opacity 0.2s; }
+        .dash-img:hover { opacity: 0.92; }
+
+        /* Lightbox */
+        #lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:9999; align-items:center; justify-content:center; }
+        #lightbox.open { display:flex; }
+        #lightbox img { max-width:92vw; max-height:92vh; border-radius:0.75rem; box-shadow:0 0 60px rgba(0,0,0,0.8); }
+        #lightbox-close { position:fixed; top:1.5rem; right:2rem; font-size:2rem; color:#94a3b8; cursor:pointer; z-index:10000; }
+        #lightbox-close:hover { color:white; }
+
+        .pipeline-step { background: #0f172a; border: 1px solid #334155; border-radius: 0.75rem; padding: 1rem 1.25rem; flex: 1; min-width: 130px; }
+        .arrow { color: #38bdf8; font-size: 1.2rem; align-self: center; flex-shrink: 0; }
+    </style>
+</head>
+<body class="max-w-5xl mx-auto px-6 py-12">
+
+    <!-- Lightbox -->
+    <div id="lightbox">
+        <span id="lightbox-close" onclick="closeLightbox()">&#x2715;</span>
+        <img id="lightbox-img" src="" alt="">
+    </div>
+
+    <!-- Back nav -->
+    <div class="mb-10">
+        <a href="index.html" class="back-btn inline-flex items-center gap-2">
+            <i class="fa-solid fa-arrow-left text-xs"></i> Back to Portfolio
+        </a>
+    </div>
+
+    <!-- Header -->
+    <div class="mb-12">
+        <div class="flex items-center gap-4 mb-4">
+            <div class="text-sky-400 bg-sky-400/10 p-3 rounded-xl">
+                <i class="fa-solid fa-list-check fa-xl"></i>
+            </div>
+            <div class="flex gap-2 flex-wrap">
+                <span class="tag bg-sky-500/20 text-sky-400">DASHBOARD</span>
+                <span class="tag bg-purple-500/20 text-purple-400">AIRBYTE</span>
+                <span class="tag bg-emerald-500/20 text-emerald-400">ELT</span>
+                <span class="tag bg-slate-500/20 text-slate-400">LOOKER STUDIO</span>
+            </div>
+        </div>
+        <h1 class="text-5xl font-extrabold mb-4">ProofHub Operations</h1>
+        <p class="text-slate-400 text-lg leading-relaxed max-w-3xl">
+            End-to-end ELT pipeline that ingests project management data from ProofHub into a centralized Data Warehouse, 
+            enabling rich operational analytics — workload distribution, task completion rates, project timelines, and team productivity insights.
+        </p>
+    </div>
+
+    <!-- Tech & Pipeline overview -->
+    <div class="section-card mb-8">
+        <h2 class="text-xl font-bold mb-5 flex items-center gap-3">
+            <i class="fa-solid fa-diagram-project text-sky-400"></i> Pipeline Architecture
+        </h2>
+        <div class="flex flex-wrap gap-2 items-center mb-6">
+            <div class="pipeline-step text-center">
+                <div class="text-sky-400 text-lg mb-1"><i class="fa-solid fa-cloud"></i></div>
+                <div class="text-xs font-bold text-white">ProofHub API</div>
+                <div class="text-xs text-slate-500 mt-1">Source</div>
+            </div>
+            <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span>
+            <div class="pipeline-step text-center">
+                <div class="text-purple-400 text-lg mb-1"><i class="fa-solid fa-bolt"></i></div>
+                <div class="text-xs font-bold text-white">Airbyte</div>
+                <div class="text-xs text-slate-500 mt-1">ELT Ingestion</div>
+            </div>
+            <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span>
+            <div class="pipeline-step text-center">
+                <div class="text-emerald-400 text-lg mb-1"><i class="fa-solid fa-database"></i></div>
+                <div class="text-xs font-bold text-white">PostgreSQL Lake</div>
+                <div class="text-xs text-slate-500 mt-1">Raw Storage</div>
+            </div>
+            <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span>
+            <div class="pipeline-step text-center">
+                <div class="text-amber-400 text-lg mb-1"><i class="fa-solid fa-server"></i></div>
+                <div class="text-xs font-bold text-white">DataWarehouse</div>
+                <div class="text-xs text-slate-500 mt-1">SQL Server DWH</div>
+            </div>
+            <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span>
+            <div class="pipeline-step text-center">
+                <div class="text-rose-400 text-lg mb-1"><i class="fa-solid fa-chart-bar"></i></div>
+                <div class="text-xs font-bold text-white">Looker Studio</div>
+                <div class="text-xs text-slate-500 mt-1">Dashboards</div>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-2">
+            <div class="bg-slate-900/60 rounded-xl p-4 border border-slate-700">
+                <div class="text-slate-400 text-xs mb-1">Data Sources</div>
+                <div class="font-bold text-sm">Projects · Tasks · People</div>
+            </div>
+            <div class="bg-slate-900/60 rounded-xl p-4 border border-slate-700">
+                <div class="text-slate-400 text-xs mb-1">Ingestion Method</div>
+                <div class="font-bold text-sm">Airbyte → PostgreSQL → MSSQL via OpenQuery</div>
+            </div>
+            <div class="bg-slate-900/60 rounded-xl p-4 border border-slate-700">
+                <div class="text-slate-400 text-xs mb-1">Key Challenge</div>
+                <div class="font-bold text-sm">Flattening nested JSONB arrays for assigned users</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SQL Queries (Tabbed) -->
+    <div class="section-card mb-8">
+        <h2 class="text-xl font-bold mb-5 flex items-center gap-3">
+            <i class="fa-solid fa-code text-sky-400"></i> SQL Queries
+        </h2>
+        <div class="flex gap-2 mb-5">
+            <button class="tab-btn active" onclick="switchTab('projects', this)">Projects Lake</button>
+            <button class="tab-btn" onclick="switchTab('tasks', this)">Tasks Lake</button>
+        </div>
+
+        <div id="tab-projects" class="tab-content active">
+            <p class="text-slate-400 text-sm mb-4">
+                Retrieves all project metadata from the PostgreSQL data lake via <code class="text-sky-400">OpenQuery</code>, 
+                flattening the <code class="text-sky-400">assigned</code> JSONB array to produce a comma-separated list of team members per project.
+            </p>
+            <pre><code class="language-sql">SELECT *
+FROM Openquery([DataWarehouse], '
+    SELECT
+        pj.id AS Project_ID, 
+        CAST(pj.title AS VARCHAR(1000)) AS title,
+        CAST(pj.created_at AS TIMESTAMP) AS created_at,
+        CAST(pp.first_name || '' '' || pp.last_name AS VARCHAR(1000)) AS Creator,
+        CAST(pp1.first_name || '' '' || pp1.last_name AS VARCHAR(1000)) AS manager,
+        CAST(string_agg(pp2.first_name || '' '' || pp2.last_name, '', '') AS TEXT) AS assigned_users,
+        CAST(pc."name" AS VARCHAR(1000)) AS Category,
+        pj.start_date,
+        pj.end_date,
+        CAST(pj.updated_at AS TIMESTAMP) AS updated_at,
+        CAST(pj.description AS TEXT) AS description
+    FROM
+        public.proofhub_projects pj
+        LEFT JOIN public.proofhub_categories pc ON CAST(pj.category ->> ''id'' AS NUMERIC) = pc.id
+        LEFT JOIN public.proofhub_people pp ON CAST(pj.creator ->> ''id'' AS NUMERIC) = pp.id
+        LEFT JOIN public.proofhub_people pp1 ON CAST(pj.manager ->> ''id'' AS NUMERIC) = pp1.id
+        LEFT JOIN LATERAL jsonb_array_elements_text(pj.assigned) AS assigned_id ON TRUE
+        LEFT JOIN public.proofhub_people pp2 ON CAST(assigned_id AS NUMERIC) = pp2.id
+    GROUP BY
+        pj.id, pj.title, pp.first_name, pp.last_name,
+        pp1.first_name, pp1.last_name, pc."name",
+        pj.start_date, pj.end_date, pj.created_at, pj.updated_at, pj.description
+');</code></pre>
+        </div>
+
+        <div id="tab-tasks" class="tab-content">
+            <p class="text-slate-400 text-sm mb-4">
+                Retrieves all task records including progress, completion data, and estimated time. 
+                Applies inline HTML-stripping with <code class="text-sky-400">regexp_replace</code> to clean the description field, 
+                and flattens the <code class="text-sky-400">assigned</code> JSONB array per task.
+            </p>
+            <pre><code class="language-sql">SELECT *
+FROM openquery ([DataWarehouse],'select
+    cast(t.id as bigint) as "Task_ID",
+    ticket as "Ticket_Number",
+    project ->> ''id'' as "Project_ID",
+    list ->> ''name'' as "List_Name",
+    stage ->> ''name'' as "Stage_Name",
+    t.title,
+    pp.first_name ||'' '' ||pp.last_name as creator,
+    CAST(string_agg(pp2.first_name || '' '' || pp2.last_name, '', '') AS TEXT) AS assigned_users,
+    cast("comments" as int),
+    percent_progress,
+    cast(parent_id as bigint) as "Parent_Task",
+    cast(sub_tasks as int),
+    cast(t.created_at as timestamp),
+    start_date,
+    cast(t.updated_at as timestamp),
+    LEFT(regexp_replace(
+        replace(replace(description, ''&lt;'', ''<''), ''&gt;'', ''>''),
+        ''<[^>]*>'', '''', ''g''
+    ), 3800) AS description,
+    completed,
+    cast(completed_at as timestamp),
+    pp1.first_name ||'' '' ||pp1.last_name as completed_by,
+    cast(estimated_mins as int),
+    cast(estimated_hours as int)
+from
+    public.proofhub_tasks t
+    LEFT JOIN public.proofhub_people pp ON CAST(t.creator ->> ''id'' AS NUMERIC) = pp.id
+    LEFT JOIN public.proofhub_people pp1 ON completed_by = pp1.id
+    LEFT JOIN LATERAL jsonb_array_elements_text(t.assigned) AS assigned_id ON TRUE
+    LEFT JOIN public.proofhub_people pp2 ON CAST(assigned_id AS NUMERIC) = pp2.id
+group by
+    t.id, list ->> ''name'', stage ->> ''name'', t.title, ticket,
+    pp.first_name, pp.last_name, project ->> ''id'', assigned,
+    "comments", completed, parent_id, sub_tasks, t.created_at,
+    start_date, t.updated_at,
+    LEFT(regexp_replace(
+        replace(replace(description, ''&lt;'', ''<''), ''&gt;'', ''>''),
+        ''<[^>]*>'', '''', ''g''
+    ), 3800),
+    completed_at, pp1.first_name, pp1.last_name,
+    estimated_mins, estimated_hours, percent_progress;')</code></pre>
+        </div>
+    </div>
+
+    <!-- Dashboard Screenshots -->
+    <div class="section-card mb-8">
+        <h2 class="text-xl font-bold mb-2 flex items-center gap-3">
+            <i class="fa-solid fa-gauge-high text-sky-400"></i> Dashboard Previews
+        </h2>
+        <p class="text-slate-500 text-sm mb-6">Click any image to expand.</p>
+
+        <div class="mb-5">
+            <p class="text-sm font-semibold text-sky-400 mb-2 uppercase tracking-wider">Overview — KPIs & Charts</p>
+            <img src="images/proofhub/Dashboard - Graphs.png" alt="ProofHub Graphs Dashboard"
+                 class="dash-img" onclick="openLightbox(this.src)">
+        </div>
+        <div class="mb-5">
+            <p class="text-sm font-semibold text-sky-400 mb-2 uppercase tracking-wider">Workload & Task Distribution Tables</p>
+            <img src="images/proofhub/Dashboard - Tables.png" alt="ProofHub Tables Dashboard"
+                 class="dash-img" onclick="openLightbox(this.src)">
+        </div>
+        <div>
+            <p class="text-sm font-semibold text-sky-400 mb-2 uppercase tracking-wider">Project Timeline — Gantt View</p>
+            <img src="images/proofhub/Dashboard - Gantt.png" alt="ProofHub Gantt Dashboard"
+                 class="dash-img" onclick="openLightbox(this.src)">
+        </div>
+    </div>
+
+    <!-- Key Highlights -->
+    <div class="section-card mb-12">
+        <h2 class="text-xl font-bold mb-5 flex items-center gap-3">
+            <i class="fa-solid fa-star text-sky-400"></i> Key Technical Highlights
+        </h2>
+        <ul class="space-y-3 text-slate-300 text-sm leading-relaxed">
+            <li class="flex gap-3"><span class="text-sky-400 mt-0.5">▸</span> <span>Used <strong class="text-white">LATERAL JOIN + jsonb_array_elements_text</strong> to unnest PostgreSQL JSONB arrays of assigned users into individual rows, then reaggregated with <code class="text-sky-300">string_agg</code>.</span></li>
+            <li class="flex gap-3"><span class="text-sky-400 mt-0.5">▸</span> <span>Inline HTML sanitization via <strong class="text-white">regexp_replace</strong> strips tags from task descriptions before loading into the warehouse — keeping the data clean without a separate transform step.</span></li>
+            <li class="flex gap-3"><span class="text-sky-400 mt-0.5">▸</span> <span><strong class="text-white">OpenQuery</strong> bridges SQL Server and the PostgreSQL lake, enabling direct cross-database querying without intermediate staging tables.</span></li>
+            <li class="flex gap-3"><span class="text-sky-400 mt-0.5">▸</span> <span>Dashboard surfaces <strong class="text-white">Gantt timelines, workload heatmaps, completion rates, and overdue task counts</strong> in real time via Looker Studio connected to the DWH.</span></li>
+        </ul>
+    </div>
+
+    <!-- Footer nav -->
+    <div class="flex justify-between items-center border-t border-slate-800 pt-8">
+        <a href="index.html" class="back-btn inline-flex items-center gap-2">
+            <i class="fa-solid fa-arrow-left text-xs"></i> Back to Portfolio
+        </a>
+        <span class="text-slate-600 text-sm">&copy; 2026 Adir Mamou</span>
+    </div>
+
+    <script>
+        // Syntax highlighting
+        hljs.highlightAll();
+
+        // Tab switching
+        function switchTab(name, btn) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + name).classList.add('active');
+            btn.classList.add('active');
+            // Re-highlight new code blocks
+            document.querySelectorAll('#tab-' + name + ' pre code').forEach(el => hljs.highlightElement(el));
+        }
+
+        // Lightbox
+        function openLightbox(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').classList.add('open');
+        }
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('open');
+        }
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) closeLightbox();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeLightbox();
+        });
+    </script>
+</body>
+</html>
